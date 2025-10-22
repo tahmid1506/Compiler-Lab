@@ -1,0 +1,113 @@
+
+...............task 1..................
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+bool isNum( string s) {
+    for (int i=0; i<s.length(); i++) {
+        if (s[i] < 48 || s[i] > 57) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    string input;
+    cout << "Enter a string: ";
+    cin >> input;
+
+    if (isNum(input)) {
+        cout << "The string is numeric." << endl;
+    } else {
+        cout << "The string is not numeric." << endl;
+    }
+
+    return 0;
+}
+
+
+....................task 2....................
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string input;
+    cout << "Enter an expression"<<endl;
+    cin >> input;
+
+    string operators = "+-*/%=";
+    int operatorCount = 0;
+
+    for (char ch : input) {
+        if (operators.find(ch) != string::npos) {
+            operatorCount++;
+            cout << "operator" << operatorCount << ": " << ch << endl;
+        }
+    }
+
+    if (operatorCount == 0) {
+        cout << "No arithmetic operators found." << endl;
+    }
+
+    return 0;
+}
+
+
+..................task 3 ...........................
+
+#include <iostream>
+#include <string>
+using namespace std;
+bool isSingleLineComment(const string& line) {
+    return line.substr(0, 2) == "//";
+}
+
+
+bool isMultiLineComment(const string& line) {
+
+    size_t start = line.find("/*");
+    size_t end = line.find("*/");
+    return (start != string::npos && end != string::npos && start < end);
+}
+
+int main() {
+    string line;
+
+
+    cout << "Enter a line of code: ";
+    getline(cin, line);
+
+
+    if (isSingleLineComment(line)) {
+        cout << "This is a single-line comment." << endl;
+    }
+
+    else if (isMultiLineComment(line)) {
+        cout << "This is a multi-line comment." << endl;
+    }
+    else {
+        cout << "This is not a comment." << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
