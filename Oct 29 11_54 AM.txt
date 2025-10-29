@@ -1,0 +1,140 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main() {
+string input;
+cout << "Enter a string ";
+cin  >> input;
+
+bool isValid = true;
+
+if((input[0] >= 'A' && input[0] <= 'Z')
+   (input[0] >= 'a' && input[0] <= 'z')
+   (input[0] >= '_')) {
+
+     isValid = false;
+
+   }
+
+    for(int i =1; <input.length(); i++ ){
+
+     if( (input[i] >= 'A' && input[i] <= 'Z')
+      (input[i] >= 'a' && input[i] <= 'z')
+      (input[i] >= '0' && input[i] <= '9')
+      (input[i] >= '_')) {
+
+      isValid =false;
+      break;
+      }
+    }
+
+    if (isValid)
+         cout<< input << "is a VALID Identifier. "<< endl;
+    else
+         cout<< input <<" is NOT a VALID Identifier."<< endl;
+
+
+}
+
+
+*********************************************************************************
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+int size;
+cout << "Enter number of elements: ";
+ cin >> size;
+
+int numbers [size];
+int sum = 0;
+
+cout << "Enter. " << size << " numbers:" << endl;
+
+ for (int i = 0; i< size; i++) {
+   cin >> numbers[i];
+   sum = sum + numbers [i];
+ }
+float average = (float) sum / size;
+cout << "Average value: " << average << endl;
+
+return 0;
+}
+
+
+******************************************************************************
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int size;
+    cout << "Enter the number of elements: ";
+    cin >> size;
+
+    int data[size];
+    cout << "Enter " << size << " elements:" << endl;
+
+    for (int i = 0; i < size; i++) {
+        cin >> data[i];
+    }
+
+    int minValue = data[0];
+    int maxValue = data[0];
+
+    for (int i = 1; i < size; i++) {
+        if (data[i] < minValue) {
+            minValue = data[i];
+        }
+        if (data[i] > maxValue) {
+            maxValue = data[i];
+        }
+    }
+
+    cout << "Minimum value: " << minValue << endl;
+    cout << "Maximum value: " << maxValue << endl;
+
+    return 0;
+}
+
+
+
+
+***********************************************************************************
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    string firstName, lastName, fullName;
+
+    cout << "Enter your first name: ";
+    cin >> firstName;
+
+    cout << "Enter your last name: ";
+    cin >> lastName;
+
+    fullName = firstName + " " + lastName;
+
+    cout << "Full name: " << fullName << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
