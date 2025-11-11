@@ -1,238 +1,203 @@
 #include <iostream>
+#include <string>
 #include <vector>
 using namespace std;
 
-// Task 1
-bool is_Numeric(string s){
-    for(int i = 0; i < s.size(); i++){
-        if(!(s[i] <= '9' && s[i] >= '0')){
+// ---------- Task 1: Check if a string is numeric ----------
+bool isNumeric(const string& s) {
+    if (s.empty()) return false;
+    for (int i = 0; i < s.size(); i++) {
+        if (s[i] < '0' || s[i] > '9') {
             return false;
         }
     }
     return true;
 }
 
-// Task 2
-bool is_operator(char i){
-    if(i == '+' || i == '-' || i == '*' || i == '/' || i == '%' || i == '='){
-        return true;
+// ---------- Task 2: Check for arithmetic operators ----------
+void checkOperators() {
+    string expr;
+    cout << "Enter an expression: ";
+    cin >> expr;
+
+    string ops = "+-*/%=";
+    int count = 0;
+
+    for (int i = 0; i < expr.length(); i++) {
+        for (int j = 0; j < ops.length(); j++) {
+            if (expr[i] == ops[j]) {
+                count++;
+                cout << "Operator " << count << ": " << expr[i] << endl;
+            }
+        }
     }
-    return false;
+
+    if (count == 0)
+        cout << "No arithmetic operators found.\n";
 }
 
-// Task 3
-bool is_comment_line(string s){
-    bool single_comment = false;
-    int single_index = 0, mul_starting = 0, mul_ending = 0;
-    bool start_comment = false;
-    bool Multiple_line_comment = false;
+// ---------- Task 3: Check for comments ----------
+void checkComment() {
+    string line;
+    cout << "Enter a line of code: ";
+    getline(cin, line);
 
-    for(int i = 0; i < s.size()-1; i++){
-        if(s[i] =='/' && s[i+1] == '/'){
-            single_comment = true;
-            single_index = i+2;
-            break;
-        }
-        if(s[i] == '/' && s[i+1] == '*'){
-            start_comment = true;
-            mul_starting = i+2;
-        }
-        else if(s[i] == '*' && s[i+1] == '/' && start_comment){
-            Multiple_line_comment = true;
-            mul_ending = i-1;
-            break;
-        }
-    }
-
-    if(single_comment){
-        cout<<"There is a single line comment\n";
-        cout<<"Comment: ";
-        for(int i = single_index; i < s.size(); i++){
-            cout<<s[i];
-        }
-        cout<<endl;
-        return true;
-    }
-
-    if(Multiple_line_comment){
-        cout<<"There is multiple line comment\n";
-        cout<<"Comment: ";
-        for(int i = mul_starting; i <= mul_ending; i++){
-            cout<<s[i];
-        }
-        cout<<endl;
-        return true;
-    }
-
-    cout<<"There is no comment line\n";
-    return false;
+    if (line.length() >= 2 && line[0] == '/' && line[1] == '/')
+        cout << "This is a single-line comment.\n";
+    else if (line.find("/*") != string::npos && line.find("*/") != string::npos)
+        cout << "This is a multi-line comment.\n";
+    else
+        cout << "This is not a comment.\n";
 }
 
-// Task 4
-bool isFirstCharValid(char ch) {
-    if ((ch >= 'A' && ch <= 'Z') ||
-        (ch >= 'a' && ch <= 'z') ||
-        (ch == '_')) {
-        return true;
-    }
-    return false;
-}
+// ---------- Task 4: Check valid identifier ----------
+bool isIdentifier(const string& word) {
+    if (word.empty()) return false;
 
-bool isOtherCharValid(char ch) {
-    if ((ch >= 'A' && ch <= 'Z') ||
-        (ch >= 'a' && ch <= 'z') ||
-        (ch >= '0' && ch <= '9') ||
-        (ch == '_')) {
-        return true;
-    }
-    return false;
-}
-
-bool isIdentifier(string word) {
-    if (word.length() == 0) return false;
-
-    if (!isFirstCharValid(word[0])) return false;
+    if (!(isalpha(word[0]) || word[0] == '_'))
+        return false;
 
     for (int i = 1; i < word.length(); i++) {
-        if (!isOtherCharValid(word[i])) return false;
+        if (!(isalnum(word[i]) || word[i] == '_'))
+            return false;
     }
-
     return true;
 }
 
-// Task 5
-double count_avg(){
-    int size;
-    cout << "Enter number of elements: ";
-    cin >> size;
+void checkIdentifier() {
+    string word;
+    cout << "Enter a word: ";
+    cin >> word;
 
-    vector<int> numbers(size);
+    if (isIdentifier(word))
+        cout << word << " is a VALID Identifier.\n";
+    else
+        cout << word << " is NOT a VALID Identifier.\n";
+}
+
+// ---------- Task 5: Calculate average ----------
+void calculateAverage() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    if (n <= 0) {
+        cout << "Invalid number of elements!\n";
+        return;
+    }
+
+    vector<int> nums(n);
     int sum = 0;
 
-    cout << "Enter " << size << " numbers:" << endl;
-    for (int i = 0; i < size; i++) {
-        cin >> numbers[i];
-        sum = sum + numbers[i];
+    cout << "Enter " << n << " numbers: ";
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
+        sum += nums[i];
     }
 
-    float average = (float)sum / size;
-    return average;
+    cout << "Average: " << (float)sum / n << endl;
 }
 
-// Task 6
-void find_min_max(){
-    int size;
-    cout << "Enter the number of elements: ";
-    cin >> size;
+// ---------- Task 6: Find min and max ----------
+void findMinMax() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
 
-    vector<int> data(size);
-    cout << "Enter " << size << " elements:" << endl;
-
-    for (int i = 0; i < size; i++) {
-        cin >> data[i];
+    if (n <= 0) {
+        cout << "Invalid number of elements!\n";
+        return;
     }
 
-    int minValue = data[0];
-    int maxValue = data[0];
-
-    for (int i = 1; i < size; i++) {
-        if (data[i] < minValue) {
-            minValue = data[i];
-        }
-        if (data[i] > maxValue) {
-            maxValue = data[i];
-        }
+    vector<int> nums(n);
+    cout << "Enter " << n << " numbers: ";
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
     }
 
-    cout << "Minimum value: " << minValue << endl;
-    cout << "Maximum value: " << maxValue << endl;
+    int minVal = nums[0];
+    int maxVal = nums[0];
+
+    for (int i = 1; i < n; i++) {
+        if (nums[i] < minVal)
+            minVal = nums[i];
+        if (nums[i] > maxVal)
+            maxVal = nums[i];
+    }
+
+    cout << "Minimum: " << minVal << endl;
+    cout << "Maximum: " << maxVal << endl;
 }
 
-int main(){
-    cout << "Press 1 to Check Numeric." << endl;
-    cout << "Press 2 to Check Operator." << endl;
-    cout << "Press 3 to Check Comment Line." << endl;
-    cout << "Press 4 to Check Identifier." << endl;
-    cout << "Press 5 to find Average." << endl;
-    cout << "Press 6 to find Minimum and Maximum." << endl;
-    cout << "Press 7 to Concate Name." << endl;
-    cout << "Press 0 to Exit!" << endl;
+// ---------- Task 7: Concatenate names ----------
+void concatName() {
+    string first, last;
+    cout << "Enter first name: ";
+    cin >> first;
+    cout << "Enter last name: ";
+    cin >> last;
+    cout << "Full name: " << first + " " + last << endl;
+}
 
-    while(true){
-        cout << "Enter Key: ";
-        int x;
-        cin >> x;
+// ---------- Menu ----------
+void showMenu() {
+    cout << "\n=========== MENU ===========\n";
+    cout << "1. Check Numeric\n";
+    cout << "2. Check Operators\n";
+    cout << "3. Check Comment Line\n";
+    cout << "4. Check Identifier\n";
+    cout << "5. Find Average\n";
+    cout << "6. Find Min & Max\n";
+    cout << "7. Concatenate Name\n";
+    cout << "0. Exit\n";
+    cout << "============================\n";
+}
 
-        if(x == 0){
-            cout << "Exiting program. Goodbye!" << endl;
+int main() {
+    int choice;
+
+    while (true) {
+        showMenu();
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore(); // Clear newline
+
+        if (choice == 0) {
+            cout << "Exiting... Goodbye!\n";
             break;
         }
-        else if(x == 1){
-            string s;
-            cout << "Enter input: ";
-            cin >> s;
 
-            if(is_Numeric(s)){
-                cout << "Numeric Constant" << endl;
+        switch (choice) {
+            case 1: {
+                string s;
+                cout << "Enter a string: ";
+                cin >> s;
+                cout << (isNumeric(s) ? "Numeric string.\n" : "Not numeric.\n");
+                break;
             }
-            else{
-                cout << "Not Numeric" << endl;
-            }
+            case 2:
+                checkOperators();
+                break;
+            case 3:
+                checkComment();
+                break;
+            case 4:
+                checkIdentifier();
+                break;
+            case 5:
+                calculateAverage();
+                break;
+            case 6:
+                findMinMax();
+                break;
+            case 7:
+                concatName();
+                break;
+            default:
+                cout << "Invalid choice! Try again.\n";
         }
-        else if(x == 2){
-            char i;
-            cout << "Enter operator: ";
-            cin >> i;
-            if(is_operator(i)){
-                cout << "It is an Operator" << endl;
-            }
-            else{
-                cout << "Not an Operator" << endl;
-            }
-        }
-        else if(x == 3){
-            string s;
-            cout << "Enter a string: ";
-            cin.ignore();
-            getline(cin, s);
-            is_comment_line(s);
-        }
-        else if(x == 4){
-            string inputText;
-            cout << "Enter a word to check: ";
-            cin >> inputText;
 
-            if (isIdentifier(inputText)) {
-                cout << "It is a valid identifier." << endl;
-            } else {
-                cout << "It is not a valid identifier." << endl;
-            }
-        }
-        else if(x == 5){
-            double average = count_avg();
-            cout << "Average value: " << average << endl;
-        }
-        else if(x == 6){
-            find_min_max();
-        }
-        else if(x == 7){
-
-            string firstName, lastName, fullName;
-
-            cout << "Enter your first name: ";
-            cin >> firstName;
-
-            cout << "Enter your last name: ";
-            cin >> lastName;
-
-            fullName = firstName + " " + lastName;
-
-            cout << "Full name: " << fullName << endl;
-        }
-        else{
-            cout << "Invalid option! Please try again." << endl;
-        }
-        cout << "----------------------------------------" << endl;
+        cout << "------------------------------------\n";
     }
 
     return 0;
