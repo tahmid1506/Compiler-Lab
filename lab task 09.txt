@@ -1,0 +1,69 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+
+void isIdentifier(string input)
+{
+
+    for (int i = 0; input[i] != '\0'; i++) {
+        if (input[i] == ' ') {
+            cout << "\"" << input << "\" is not a valid identifier (contains space)" << endl;
+            return;
+        }
+    }
+
+
+    if (!((input[0] >= 'A' && input[0] <= 'Z') ||
+          (input[0] >= 'a' && input[0] <= 'z') ||
+           input[0] == '_')) {
+        cout << "\"" << input << "\" is not a valid identifier (invalid first character)" << endl;
+        return;
+    }
+
+
+    for (int i = 1; input[i] != '\0'; i++) {
+        if (!((input[i] >= 'A' && input[i] <= 'Z') ||
+              (input[i] >= 'a' && input[i] <= 'z') ||
+              (input[i] >= '0' && input[i] <= '9') ||
+               input[i] == '_')) {
+            cout << "\"" << input << "\" is not a valid identifier (invalid character)" << endl;
+            return;
+        }
+    }
+
+
+    cout << "\"" << input << "\" is a valid identifier" << endl;
+}
+
+int main()
+{
+    string filename;
+
+
+    cout << "Please enter the name of the file to check (e.g., sample.txt): ";
+    cin >> filename;
+
+    ifstream file(filename);
+    string input;
+
+
+    if (!file) {
+        cout << "File \"" << filename << "\" not found or unable to open!" << endl;
+        return 0;
+    }
+
+
+    while (getline(file, input)) {
+        cout << "Reading from file: \"" << input << "\"" << endl;
+        isIdentifier(input);
+    }
+
+
+    file.close();
+    return 0;
+}
+
+
