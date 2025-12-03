@@ -1,0 +1,114 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <cctype>
+
+bool isKeyword(const std::string &word)
+{
+    const std::vector<std::string> keywords = {"int", "return"};
+    for (const std::string &keyword : keywords)
+    {
+        if (word == keyword)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Function to check if a string is a constant (integer)
+bool isConstant(const std::string &word)
+{
+    for (char c : word)
+    {
+        if (!isdigit(c))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Function to check if a string is an identifier (variable names, etc.)
+bool isIdentifier(const std::string &word)
+{
+    if (isKeyword(word) || isConstant(word))
+    {
+        return false;
+    }
+    return !word.empty() && isalpha(word[0]);
+}
+
+// Function to check if a string is an operator
+bool isOperator(const std::string &word)
+{
+    const std::vector<std::string> operators = {"+", "-", "*", "/", "%", "=", "++", "--"};
+    for (const std::string &op : operators)
+    {
+        if (word == op)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Function to check if a string is punctuation
+bool isPunctuation(const std::string &word)
+{
+    const std::vector<std::string> punctuation = {";", "(", ")", "{", "}"};
+    for (const std::string &punct : punctuation)
+    {
+        if (word == punct)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void tokenizeAndClassify(const std::string &code)
+{
+    std::stringstream ss(code);
+    std::string token;
+
+    while (ss >> token)
+    {
+        if (isKeyword(token))
+        {
+            std::cout << token << " is a Keyword" << std::endl;
+        }
+        else if (isConstant(token))
+        {
+            std::cout << token << " is a Constant" << std::endl;
+        }
+        else if (isIdentifier(token))
+        {
+            std::cout << token << " is an Identifier" << std::endl;
+        }
+        else if (isOperator(token))
+        {
+            std::cout << token << " is an Operator" << std::endl;
+        }
+        else if (isPunctuation(token))
+        {
+            std::cout << token << " is a Punctuation" << std::endl;
+        }
+        else
+        {
+            std::cout << token << " is unknown" << std::endl;
+        }
+    }
+}
+
+int main()
+{
+    std::string code = "int a, b; a = 10; return 0;";
+
+    std::cout << "Tokenizing code..." << std::endl;
+    tokenizeAndClassify(code);
+
+    return 0;
+}
