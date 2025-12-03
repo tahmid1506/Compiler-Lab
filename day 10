@@ -1,114 +1,124 @@
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <vector>
 #include <cctype>
 
-bool isKeyword(const std::string &word)
+using namespace std;
+
+
+bool isKeyword(const string &word)
 {
-    const std::vector<std::string> keywords = {"int", "return"};
-    for (const std::string &keyword : keywords)
+    const vector<string> keywords = {"int", "return"};
+    for (const string &keyword : keywords)
     {
         if (word == keyword)
-        {
             return true;
-        }
     }
     return false;
 }
 
-// Function to check if a string is a constant (integer)
-bool isConstant(const std::string &word)
+
+bool isConstant(const string &word)
 {
     for (char c : word)
     {
         if (!isdigit(c))
-        {
             return false;
-        }
+    }
+    return !word.empty();
+}
+
+
+bool isIdentifier(const string &word)
+{
+    if (isKeyword(word) || isConstant(word))
+        return false;
+
+    if (!isalpha(word[0]) && word[0] != '_')
+        return false;
+
+    for (int i = 1; i < word.size(); i++)
+    {
+        if (!isalnum(word[i]) && word[i] != '_')
+            return false;
     }
     return true;
 }
 
-// Function to check if a string is an identifier (variable names, etc.)
-bool isIdentifier(const std::string &word)
-{
-    if (isKeyword(word) || isConstant(word))
-    {
-        return false;
-    }
-    return !word.empty() && isalpha(word[0]);
-}
 
-// Function to check if a string is an operator
-bool isOperator(const std::string &word)
+bool isOperator(const string &word)
 {
-    const std::vector<std::string> operators = {"+", "-", "*", "/", "%", "=", "++", "--"};
-    for (const std::string &op : operators)
+    const vector<string> operators = {"+", "-", "*", "/", "%", "=", "++", "--"};
+    for (const string &op : operators)
     {
         if (word == op)
-        {
             return true;
-        }
     }
     return false;
 }
 
-// Function to check if a string is punctuation
-bool isPunctuation(const std::string &word)
+
+bool isPunctuation(const string &word)
 {
-    const std::vector<std::string> punctuation = {";", "(", ")", "{", "}"};
-    for (const std::string &punct : punctuation)
+    const vector<string> punctuation = {";", "(", ")", "{", "}", ","};
+    for (const string &p : punctuation)
     {
-        if (word == punct)
-        {
+        if (word == p)
             return true;
-        }
     }
     return false;
 }
 
 
-void tokenizeAndClassify(const std::string &code)
+void tokenizeAndClassify(const string &line)
 {
-    std::stringstream ss(code);
-    std::string token;
+    string token;
+    stringstream ss(line);
 
     while (ss >> token)
     {
+        cout << "Token: \"" << token << "\" -> ";
+
         if (isKeyword(token))
-        {
-            std::cout << token << " is a Keyword" << std::endl;
-        }
+            cout << "Keyword" << endl;
         else if (isConstant(token))
-        {
-            std::cout << token << " is a Constant" << std::endl;
-        }
+            cout << "Constant" << endl;
         else if (isIdentifier(token))
-        {
-            std::cout << token << " is an Identifier" << std::endl;
-        }
+            cout << "Identifier" << endl;
         else if (isOperator(token))
-        {
-            std::cout << token << " is an Operator" << std::endl;
-        }
+            cout << "Operator" << endl;
         else if (isPunctuation(token))
-        {
-            std::cout << token << " is a Punctuation" << std::endl;
-        }
+            cout << "Punctuation" << endl;
         else
-        {
-            std::cout << token << " is unknown" << std::endl;
-        }
+            cout << "Unknown" << endl;
     }
 }
 
 int main()
 {
-    std::string code = "int a, b; a = 10; return 0;";
+    string filename;
 
-    std::cout << "Tokenizing code..." << std::endl;
-    tokenizeAndClassify(code);
+    cout << "Please enter the name of the code file (e.g., code.txt): ";
+    cin >> filename;
 
+    ifstream file(filename);
+
+    if (!file)
+    {
+        cout << "File \"" << filename << "\" not found or unable to open!" << endl;
+        return 0;
+    }
+
+    string line;
+
+    while (getline(file, line))
+    {
+        cout << "\nReading line: \"" << line << "\"" << endl;
+        tokenizeAndClassify(line);
+    }
+
+    file.close();
     return 0;
 }
