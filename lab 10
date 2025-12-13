@@ -1,0 +1,85 @@
+#include <iostream>
+#include <regex>
+using namespace std;
+
+ 
+
+// 1st regex: a*
+bool regex1(const string &input) {
+    regex r("a*");
+    return regex_match(input, r);
+}
+
+ 
+
+// 2nd regex: a+b
+bool regex2(const string &input) {
+    regex r("a+b");
+    return regex_match(input, r);
+}
+
+ 
+
+// 3rd regex: a.b
+bool regex3(const string &input) {
+    regex r("a.b");
+    return regex_match(input, r);
+}
+
+ 
+
+// 4th regex: (a+b)b(a+b)(b)*
+bool regex4(const string &input) {
+    regex r("(a|b)+b(a|b)(b)*");
+    return regex_match(input, r);
+}
+
+ 
+
+bool regex5(const string &input) {
+    regex r("((a|b)+)((a|b)*)");
+    return regex_match(input, r);
+}
+
+ 
+
+int main() {
+    int choice;
+    string input;
+
+ 
+
+    cout << "Choose regex to test (1-5): ";
+    cin >> choice;
+
+ 
+
+    cout << "Enter input string: ";
+    cin >> input;
+
+ 
+
+    bool valid = false;
+
+ 
+
+    switch(choice) {
+        case 1: valid = regex1(input); break;
+        case 2: valid = regex2(input); break;
+        case 3: valid = regex3(input); break;
+        case 4: valid = regex4(input); break;
+        case 5: valid = regex5(input); break;
+        default: cout << "Invalid choice!" << endl; return 0;
+    }
+
+ 
+
+    if(valid)
+        cout << "Valid input!" << endl;
+    else
+        cout << "Invalid input!" << endl;
+
+ 
+
+    return 0;
+}
