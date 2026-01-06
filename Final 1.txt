@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Define DFA states
+enum State { A, B, C, D, E, F, G, H };
+
+State transition(State current, char input) {
+    switch (current) {
+        case A:
+            if (input == 'a') return B;
+            if (input == 'b') return C;
+            break;
+
+        case B:
+            if (input == 'a') return B;
+            if (input == 'b') return D;
+            break;
+
+        case C:
+            if (input == 'a') return E;
+            if (input == 'b') return C;
+            break;
+
+        case E:
+            if (input == 'a') return E;
+            if (input == 'b') return F;
+            break;
+
+        case F:
+            if (input == 'a') return G;
+            if (input == 'b') return F;
+            break;
+
+        case G:
+            if (input == 'a') return G;
+            if (input == 'b') return H;
+            break;
+
+        case H:
+            return H;
+
+        case D:
+            return D;
+    }
+    return D;
+}
+
+int main() {
+    string input;
+    cout << "Enter input string: ";
+    cin >> input;
+
+    State current = A;
+
+    for (char ch : input) {
+        current = transition(current, ch);
+    }
+
+    /*
+    for (int i = 0; i < input.length(); i++) {
+    char ch = input[i];
+    current = transition(current, ch);
+}
+*/
+
+    if (current == H)
+        cout << "Accepted\n";
+    else
+        cout << "Rejected\n";
+
+    return 0;
+}
